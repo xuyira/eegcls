@@ -1,0 +1,7 @@
+{
+  "sampling_rate": 250,
+  "window_size": 128,
+  "stride": 64,
+  "short_window_policy": "drop",
+  "per_window_normalize": true
+}

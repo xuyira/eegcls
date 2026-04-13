@@ -1,0 +1,60 @@
+{
+  "train_windows": 6,
+  "val_windows": 6,
+  "test_windows": 6,
+  "best_val_accuracy": 0.5,
+  "test_accuracy": 0.3333333333333333,
+  "test_loss": 1.0999599695205688,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.1564040184020996,
+      "val_loss": 1.0970759391784668,
+      "val_accuracy": 0.3333333333333333
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.1061917543411255,
+      "val_loss": 1.0968217849731445,
+      "val_accuracy": 0.5
+    },
+    {
+      "epoch": 3,
+      "train_loss": 1.1116666793823242,
+      "val_loss": 1.096521258354187,
+      "val_accuracy": 0.5
+    },
+    {
+      "epoch": 4,
+      "train_loss": 1.1473772525787354,
+      "val_loss": 1.096174716949463,
+      "val_accuracy": 0.3333333333333333
+    },
+    {
+      "epoch": 5,
+      "train_loss": 1.147849440574646,
+      "val_loss": 1.0958174467086792,
+      "val_accuracy": 0.3333333333333333
+    },
+    {
+      "epoch": 6,
+      "train_loss": 1.0732773542404175,
+      "val_loss": 1.0953876972198486,
+      "val_accuracy": 0.3333333333333333
+    }
+  ],
+  "train_config": {
+    "dataset_root": "demo_dataset",
+    "artifact_dir": "artifacts/eegnet_demo",
+    "sampling_rate": 250,
+    "window_size": 128,
+    "stride": 64,
+    "short_window_policy": "drop",
+    "model_name": "EEGNet",
+    "batch_size": 8,
+    "epochs": 6,
+    "learning_rate": 0.001,
+    "dropout": 0.25,
+    "seed": 7
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "model_name": "EEGNet",
+  "num_channels": 8,
+  "num_time": 128,
+  "num_classes": 3,
+  "dropout": 0.25
+}
