@@ -40,6 +40,7 @@ def load_artifact(artifact_dir: str | Path) -> dict:
         num_time=model_config["num_time"],
         num_classes=model_config["num_classes"],
         dropout=model_config["dropout"],
+        sampling_rate=model_config.get("sampling_rate", preprocess_config_dict.get("sampling_rate", 250)),
     )
     try:
         state_dict = torch.load(path / "model.pt", map_location="cpu", weights_only=True)

@@ -85,6 +85,7 @@ def train(config: TrainConfig) -> dict:
         num_time=config.window_size,
         num_classes=len(train_ds.label_map),
         dropout=config.dropout,
+        sampling_rate=config.sampling_rate,
     ).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
 
@@ -132,6 +133,7 @@ def train(config: TrainConfig) -> dict:
         "num_time": config.window_size,
         "num_classes": len(train_ds.label_map),
         "dropout": config.dropout,
+        "sampling_rate": config.sampling_rate,
     }
     train_summary = {
         "train_windows": len(train_ds),

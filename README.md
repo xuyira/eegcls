@@ -22,7 +22,7 @@
 - 固定通道数：只取前 `8` 个 EEG 通道
 - 固定任务类型：离线、单标签分类
 - 固定推理形式：输入一个 `txt`，输出按时间顺序排列的逐窗口分类结果
-- 固定模型：当前只接入 `EEGNet`
+- 固定模型输入接口：当前已接入 `EEGNet`、`TSception`、`EEGViT`、`Conformer`、`Deformer`、`LGGNet`
 
 ## 2. 当前目录说明
 
@@ -31,7 +31,7 @@
 - [eegcls/openbci.py](/home/xyr/workspace/eegcls/eegcls/openbci.py)：OpenBCI `txt` 解析
 - [eegcls/preprocess.py](/home/xyr/workspace/eegcls/eegcls/preprocess.py)：窗口切片与标准化
 - [eegcls/dataset.py](/home/xyr/workspace/eegcls/eegcls/dataset.py)：数据集扫描与窗口样本构建
-- [eegcls/modeling.py](/home/xyr/workspace/eegcls/eegcls/modeling.py)：模型构建，当前只支持 `EEGNet`
+- [eegcls/modeling.py](/home/xyr/workspace/eegcls/eegcls/modeling.py)：模型构建，当前支持多个 EEG backbone
 - [eegcls/training.py](/home/xyr/workspace/eegcls/eegcls/training.py)：训练与评估
 - [eegcls/artifact.py](/home/xyr/workspace/eegcls/eegcls/artifact.py)：模型 artifact 保存与加载
 - [eegcls/inference.py](/home/xyr/workspace/eegcls/eegcls/inference.py)：单文件推理
@@ -39,7 +39,7 @@
 脚本目录：
 
 - [scripts/build_toy_dataset.py](/home/xyr/workspace/eegcls/scripts/build_toy_dataset.py)：用一个原始 `txt` 构造 toy 三分类数据集
-- [scripts/train_eegnet.py](/home/xyr/workspace/eegcls/scripts/train_eegnet.py)：训练 `EEGNet`
+- [scripts/train_eegnet.py](/home/xyr/workspace/eegcls/scripts/train_eegnet.py)：训练指定模型
 - [scripts/predict_file.py](/home/xyr/workspace/eegcls/scripts/predict_file.py)：对单个 `txt` 做推理
 
 ## 3. 运行环境
@@ -163,7 +163,7 @@ demo_dataset/
 - 这个 toy 数据集是从同一个原始文件按顺序切成多个片段构造出来的
 - 它的作用只是验证代码链路，不代表真实可用的训练数据
 
-### 6.2 训练 EEGNet
+### 6.2 训练模型
 
 命令：
 
@@ -171,13 +171,45 @@ demo_dataset/
 PYTHONPATH=. python scripts/train_eegnet.py \
   --dataset-root demo_dataset \
   --artifact-dir artifacts/eegnet_demo \
+  --model-name EEGNet \
   --epochs 6 \
   --batch-size 8 \
   --window-size 128 \
   --stride 64
 ```
 
+可选 `--model-name`：
+
+- `EEGNet`
+- `TSception`
+- `EEGViT`
+- `Conformer`
+- `Deformer`
+- `LGGNet`
+
 训练完成后，会在 `artifacts/eegnet_demo/` 下面生成模型 artifact。
+
+也可以在python中直接调用：
+
+```
+from eegcls.training import TrainConfig, train
+
+summary = train(
+    TrainConfig(
+        dataset_root="demo_dataset",
+        artifact_dir="artifacts/conformer_demo",
+        model_name="Conformer",
+        sampling_rate=250,
+        window_size=128,
+        stride=64,
+        epochs=6,
+        batch_size=8,
+    )
+)
+
+print(summary["best_val_accuracy"])
+print(summary["test_accuracy"])
+```
 
 ## 7. Artifact 说明
 
@@ -237,7 +269,7 @@ print(results[0])
 
 当前版本只是最小可运行版本，限制比较明确：
 
-- 目前只支持 `EEGNet`
+- 当前支持的 backbone 为 `EEGNet`、`TSception`、`EEGViT`、`Conformer`、`Deformer`、`LGGNet`
 - 目前只支持 OpenBCI `txt`
 - 目前只读取前 `8` 个 EEG 通道
 - 目前只做离线推理，不做实时流式推理
@@ -254,3 +286,4 @@ print(results[0])
 4. 在 `preprocess` 中加入 notch/band-pass/resample 等信号处理
 5. 补充更完整的评估指标和结果导出
 6. 再考虑接入更多模型，而不是一开始就并行支持很多 backbone
+

@@ -7,9 +7,10 @@ from eegcls.training import TrainConfig, train
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Train EEGNet on an OpenBCI dataset.")
+    parser = argparse.ArgumentParser(description="Train an EEG model on an OpenBCI dataset.")
     parser.add_argument("--dataset-root", required=True)
     parser.add_argument("--artifact-dir", required=True)
+    parser.add_argument("--model-name", default="EEGNet")
     parser.add_argument("--sampling-rate", type=int, default=250)
     parser.add_argument("--window-size", type=int, default=128)
     parser.add_argument("--stride", type=int, default=64)
@@ -21,6 +22,7 @@ def main() -> None:
         TrainConfig(
             dataset_root=args.dataset_root,
             artifact_dir=args.artifact_dir,
+            model_name=args.model_name,
             sampling_rate=args.sampling_rate,
             window_size=args.window_size,
             stride=args.stride,
